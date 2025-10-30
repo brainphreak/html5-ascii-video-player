@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Video Player</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="matrix-rain" id="matrixRain"></div>
+    
+    <div class="container">
+        <header>
+            <div class="scan-line"></div>
+            <h1>ASCII VIDEO PLAYER</h1>
+            <div class="tagline">
+                <p>Transform videos into ASCII art in real-time. Upload any MP4 video and watch it become digital art.</p>
+            </div>
+        </header>
+        
+        <div class="status-bar">
+            <div class="status-item">STATUS: <span class="flashing">ASCII PROCESSING</span></div>
+            <div class="status-item"></div>
+            <div class="status-item">RESOLUTION: 240</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="preview-section">
+                <div class="display-area">
+                    <div class="ascii-container" id="ascii-container">
+                        <div class="ascii-wrapper" id="ascii-wrapper">
+                            <div id="ascii-art" class="ascii-art">Upload a video to see the ASCII magic!</div>
+                        </div>
+                    </div>
+                    
+                    <div class="fullscreen-controls" id="fullscreen-controls">
+                        <button id="fullscreen-exit-btn" class="fullscreen-btn">EXIT FULLSCREEN (ESC)</button>
+                    </div>
+                    
+                    <div class="seek-controls">
+                        <button id="play-btn" disabled>PLAY</button>
+                        <button id="pause-btn" disabled>PAUSE</button>
+                        <button id="restart-btn" disabled>RESTART</button>
+                        <button id="fullscreen-btn" class="fullscreen-btn" disabled>FULLSCREEN (F)</button>
+                        <input type="range" id="seek-slider" class="seek-slider" min="0" max="100" value="0" disabled>
+                        <div class="time-display" id="time-display">0:00 / 0:00</div>
+                    </div>
+                    
+                    <video id="original-video" class="original-video" controls></video>
+                    
+                    <div class="info-panel" id="info-panel">
+                        Upload a video to begin
+                    </div>
+                    
+                    <!-- Add the missing loading element -->
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>Processing video...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <div class="controls">
+                    <button id="upload-btn" class="upload-btn">UPLOAD VIDEO</button>
+                </div>
+                
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">📁</div>
+                    <h3>UPLOAD MP4 VIDEO</h3>
+                    <p>Click or drag and drop your MP4 file here</p>
+                    <input type="file" id="file-input" accept=".mp4,.MP4">
+                </div>
+                
+                <div class="settings-panel">
+                    <div class="setting-group">
+                        <label for="zoom-slider">ZOOM:</label>
+                        <input type="range" id="zoom-slider" min="10" max="200" value="50">
+                        <span id="zoom-value">50%</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="resolution-slider">RESOLUTION:</label>
+                        <input type="range" id="resolution-slider" min="10" max="400" value="240">
+                        <span id="resolution-value">240</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="brightness-slider">BRIGHTNESS:</label>
+                        <input type="range" id="brightness-slider" min="0.1" max="3" value="1" step="0.1">
+                        <span id="brightness-value">1</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="contrast-slider">CONTRAST:</label>
+                        <input type="range" id="contrast-slider" min="0.1" max="3" value="0.8" step="0.1">
+                        <span id="contrast-value">0.8</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="font-size">FONT SIZE:</label>
+                        <input type="range" id="font-size" min="1" max="24" value="13" step="0.5">
+                        <span id="font-size-value">13px</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="letter-spacing">LETTER SPACING:</label>
+                        <input type="range" id="letter-spacing" min="-2" max="5" value="0.5" step="0.1">
+                        <span id="letter-spacing-value">0.5px</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="line-spacing">LINE SPACING:</label>
+                        <input type="range" id="line-spacing" min="0.5" max="2" value="1.4" step="0.1">
+                        <span id="line-spacing-value">1.4</span>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="ascii-color">ASCII COLOR:</label>
+                        <input type="color" id="ascii-color" value="#32CD32">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="bg-color">BACKGROUND:</label>
+                        <input type="color" id="bg-color" value="#000000">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label class="toggle-container">
+                            <span>COLOR ASCII:</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="color-ascii">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="font-family">FONT:</label>
+                        <select id="font-family">
+                            <option value="'Courier New', monospace">Courier New</option>
+                            <option value="'Lucida Console', Monaco, monospace">Lucida Console</option>
+                            <option value="'Consolas', 'Bitstream Vera Sans Mono', monospace">Consolas</option>
+                            <option value="'Source Code Pro', monospace">Source Code Pro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="font-weight">FONT WEIGHT:</label>
+                        <select id="font-weight">
+                            <option value="normal">Normal</option>
+                            <option value="bold" selected>Bold</option>
+                            <option value="bolder">Bolder</option>
+                            <option value="lighter">Lighter</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="char-set">CHARACTER SET:</label>
+                        <select id="char-set">
+                            <option value="default">Default: .:-=+*#%@</option>
+                            <option value="simple">Simple: .:ioVM</option>
+                            <option value="blocks">Blocks: ░▒▓█</option>
+                            <option value="detailed">Detailed: ·:!7?%$#@</option>
+                            <option value="minimal">Minimal: ·+*#</option>
+                            <option value="inverted">Inverted: @%#*+=-:.</option>
+                            <option value="extended">Extended: ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group" id="custom-chars-group" style="display: none;">
+                        <label for="custom-chars">CUSTOM CHARS:</label>
+                        <input type="text" id="custom-chars" placeholder="Enter characters" value=" .:-=+*#%@">
+                    </div>
+                    
+                    <div class="test-videos">
+                        <h3>VIDEO FOR TEST</h3>
+                        <div class="test-video-links">
+                            <a href="./hackers.mp4" class="test-video-link">
+                                PLAY HACKERS CLIP
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>ASCII VIDEO PROCESSOR</p>
+            <p>FOR EDUCATIONAL AND CREATIVE PURPOSES</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
