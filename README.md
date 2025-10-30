@@ -44,3 +44,7 @@ The ASCII conversion process works as follows:
 3.  The image data of the canvas is then processed to determine the brightness of each pixel.
 4.  The brightness of each pixel is mapped to a character in a character set. The character set can be customized by the user.
 5.  The resulting ASCII characters are then displayed in the preview area.
+
+## Test Video
+
+A test video is included in the repository. You can play it by clicking the "PLAY HACKERS CLIP" button.
