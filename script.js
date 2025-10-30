@@ -89,6 +89,8 @@
             const infoPanel = document.getElementById('info-panel');
             const loading = document.getElementById('loading');
             const playTestVideoBtn = document.getElementById('play-test-video');
+            const statusMessage = document.getElementById('status-message');
+            const resolutionDisplay = document.getElementById('resolution-display');
             
             // Character sets
             const charSets = {
@@ -111,6 +113,8 @@
             let resolution = parseInt(resolutionSlider.value);
             let brightness = parseFloat(brightnessSlider.value);
             let contrast = parseFloat(contrastSlider.value);
+            let previousBrightness = brightness; // Store initial brightness
+            let previousContrast = contrast;     // Store initial contrast
             let currentCharSet = charSets.default;
             let fontSize = parseFloat(fontSizeSlider.value);
             let letterSpacing = parseFloat(letterSpacingSlider.value);
@@ -191,6 +195,7 @@
                 uploadArea.style.display = 'none';
                 loading.style.display = 'block';
                 asciiArt.textContent = 'Processing video...';
+                statusMessage.textContent = 'STATUS: LOADING VIDEO';
                 
                 const videoUrl = URL.createObjectURL(file);
                 loadVideo(videoUrl, file.name, file.size);
@@ -199,19 +204,23 @@
             // Play test video
             function playTestVideo(e) {
                 e.preventDefault();
+                console.log('playTestVideo called');
                 loading.style.display = 'block';
                 asciiArt.textContent = 'Loading test video...';
-                loadVideo('./Hackers Movie Clip.mp4', 'Hackers Movie Clip.mp4', 0);
+                statusMessage.textContent = 'STATUS: LOADING TEST VIDEO';
+                loadVideo('./Hackers (1995) Original Trailer.mp4', 'Hackers (1995) Original Trailer.mp4', 0);
             }
             
             // Common video loading function
             function loadVideo(videoUrl, fileName, fileSize) {
+                console.log('loadVideo called with:', videoUrl, fileName, fileSize);
                 // Reset the video element
                 originalVideo.src = videoUrl;
                 originalVideo.load();
                 
                 // Wait for video metadata to load
                 originalVideo.addEventListener('loadedmetadata', function() {
+                    console.log('loadedmetadata event fired');
                     videoDuration = originalVideo.duration;
                     seekSlider.max = Math.floor(videoDuration);
                     updateTimeDisplay(0, videoDuration);
@@ -219,6 +228,8 @@
                     
                     initVideoProcessing();
                     loading.style.display = 'none';
+                    statusMessage.textContent = 'STATUS: READY';
+                    resolutionDisplay.textContent = `RESOLUTION: ${resolution}`;
                     
                     // Update info panel
                     const sizeInfo = fileSize > 0 ? ` | Size: ${(fileSize / (1024 * 1024)).toFixed(2)} MB` : '';
@@ -237,10 +248,11 @@
                 });
                 
                 originalVideo.addEventListener('error', function(e) {
+                    console.error('Video loading error:', fileName, e);
                     loading.style.display = 'none';
                     asciiArt.textContent = `Error loading video: ${fileName}.`;
                     infoPanel.textContent = `Failed to load: ${fileName}`;
-                    console.error('Video loading error:', fileName, e);
+                    statusMessage.textContent = 'STATUS: ERROR';
                 });
                 
                 // Update seek bar during playback
@@ -256,11 +268,14 @@
                     // Reset audio by reloading the video element
                     originalVideo.currentTime = 0;
                     originalVideo.load();
+                    statusMessage.textContent = 'STATUS: ENDED';
                 });
             }
             
             // Initialize video processing
             function initVideoProcessing() {
+                console.log('initVideoProcessing called');
+                statusMessage.textContent = 'STATUS: INITIALIZING PROCESSOR';
                 // Create offscreen video element for processing
                 if (video) {
                     video.pause();
@@ -281,8 +296,10 @@
                 
                 // Set canvas size to match video dimensions
                 video.addEventListener('loadeddata', function() {
+                    console.log('loadeddata event fired on processing video');
                     canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
+                    statusMessage.textContent = 'STATUS: VIDEO LOADED';
                     
                     // Process first frame for preview
                     if (!isPlaying) {
@@ -292,6 +309,8 @@
                 
                 // Ensure video is ready to play
                 video.addEventListener('canplay', function() {
+                    console.log('canplay event fired on processing video');
+                    statusMessage.textContent = 'STATUS: READY TO PLAY';
                     if (!isPlaying) {
                         processVideoFrame();
                     }
@@ -300,17 +319,20 @@
                 // Handle video errors
                 video.addEventListener('error', function(e) {
                     console.error('Processing video error:', e);
+                    statusMessage.textContent = 'STATUS: PROCESSING ERROR';
                 });
             }
             
             // Play video
             function playVideo() {
+                console.log('playVideo called');
                 if (!video) return;
                 
                 isPlaying = true;
                 video.play().catch(e => console.log('Video play error:', e));
                 originalVideo.play().catch(e => console.log('Original video play error:', e));
                 processVideoFrame();
+                statusMessage.textContent = 'STATUS: PLAYING';
             }
             
             // Pause video
@@ -325,6 +347,7 @@
                     cancelAnimationFrame(frameRequestId);
                     frameRequestId = null;
                 }
+                statusMessage.textContent = 'STATUS: PAUSED';
             }
             
             // Restart video - Fixed audio issue
@@ -345,6 +368,7 @@
                 setTimeout(() => {
                     playVideo();
                 }, 100);
+                statusMessage.textContent = 'STATUS: RESTARTING';
             }
             
             // Toggle fullscreen
@@ -485,6 +509,7 @@
             
             // Process each video frame
             function processVideoFrame() {
+                console.log('processVideoFrame called');
                 if (!isPlaying || !video || video.paused || video.ended) {
                     isPlaying = false;
                     return;
@@ -620,6 +645,7 @@
             function updateResolution() {
                 resolution = parseInt(resolutionSlider.value);
                 resolutionValue.textContent = resolution;
+                resolutionDisplay.textContent = `RESOLUTION: ${resolution}`;
                 
                 // Redraw current frame if video is loaded
                 if (video && !isPlaying) {
@@ -627,111 +653,281 @@
                 }
             }
             
-            // Update brightness - now only affects the final output color
-            function updateBrightness() {
-                brightness = parseFloat(brightnessSlider.value);
-                brightnessValue.textContent = brightness.toFixed(1);
-                
-                // Apply brightness filter to the ASCII art element
-                asciiArt.style.filter = `brightness(${brightness})`;
-            }
+                                    // Update brightness - now only affects the final output color
             
-            // Update contrast
-            function updateContrast() {
-                contrast = parseFloat(contrastSlider.value);
-                contrastValue.textContent = contrast.toFixed(1);
-                
-                // Redraw current frame if video is loaded
-                if (video && !isPlaying) {
-                    processVideoFrame();
-                }
-            }
+                                    function updateBrightness() {
             
-            // Update font size
-            function updateFontSize() {
-                fontSize = parseFloat(fontSizeSlider.value);
-                fontSizeValue.textContent = `${fontSize}px`;
-                asciiArt.style.fontSize = `${fontSize}px`;
-            }
+                                        if (!useColorAscii) {
             
-            // Update letter spacing
-            function updateLetterSpacing() {
-                letterSpacing = parseFloat(letterSpacingSlider.value);
-                letterSpacingValue.textContent = `${letterSpacing}px`;
-                asciiArt.style.letterSpacing = `${letterSpacing}px`;
-            }
+                                            previousBrightness = brightness;
             
-            // Update line spacing
-            function updateLineSpacing() {
-                lineSpacing = parseFloat(lineSpacingSlider.value);
-                lineSpacingValue.textContent = lineSpacing;
-                asciiArt.style.lineHeight = lineSpacing;
-            }
+                                        }
             
-            // Update ASCII color
-            function updateAsciiColor() {
-                asciiArt.style.color = asciiColor.value;
-            }
+                                        brightness = parseFloat(brightnessSlider.value);
             
-            // Update background color
-            function updateBgColor() {
-                asciiContainer.style.backgroundColor = bgColor.value;
-            }
+                                        brightnessValue.textContent = brightness.toFixed(1);
             
-            // Update color ASCII toggle
-            function updateColorAscii() {
-                useColorAscii = colorAsciiToggle.checked;
-                
-                // Redraw current frame if video is loaded
-                if (video && !isPlaying) {
-                    processVideoFrame();
-                }
-            }
+                        
             
-            // Update font family
-            function updateFont() {
-                asciiArt.style.fontFamily = fontFamily.value;
-            }
+                                        // Apply brightness filter to the ASCII art element
             
-            // Update font weight
-            function updateFontWeight() {
-                asciiArt.style.fontWeight = fontWeight.value;
-            }
+                                        asciiArt.style.filter = `brightness(${brightness})`;
             
-            // Update character set
-            function updateCharSet() {
-                const selectedSet = charSet.value.split(':')[0].trim();
-                
-                if (selectedSet === 'custom') {
-                    currentCharSet = customChars.value || ' .:-=+*#%@';
-                    customCharsGroup.style.display = 'flex';
-                } else {
-                    currentCharSet = charSets[selectedSet];
-                    customCharsGroup.style.display = 'none';
-                }
-                
-                // Redraw current frame if video is loaded
-                if (video && !isPlaying) {
-                    processVideoFrame();
-                }
-            }
+                                    }
             
-            // Update custom characters
-            function updateCustomChars() {
-                if (charSet.value.split(':')[0].trim() === 'custom') {
-                    currentCharSet = customChars.value || ' .:-=+*#%@';
-                    
-                    // Redraw current frame if video is loaded
-                    if (video && !isPlaying) {
-                        processVideoFrame();
-                    }
-                }
-            }
+                        
             
-            // Format time in seconds to MM:SS
-            function formatTime(seconds) {
-                const mins = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-            }
-        });
+                                    // Update contrast
+            
+                                    function updateContrast() {
+            
+                                        if (!useColorAscii) {
+            
+                                            previousContrast = contrast;
+            
+                                        }
+            
+                                        contrast = parseFloat(contrastSlider.value);
+            
+                                        contrastValue.textContent = contrast.toFixed(1);
+            
+                        
+            
+                                        // Redraw current frame if video is loaded
+            
+                                        if (video && !isPlaying) {
+            
+                                            processVideoFrame();
+            
+                                        }
+            
+                                    }
+            
+                        
+            
+                                    // Update color ASCII toggle
+            
+                                    function updateColorAscii() {
+            
+                                        useColorAscii = colorAsciiToggle.checked;
+            
+                        
+            
+                                        if (useColorAscii) {
+            
+                                            // Store current values before overriding
+            
+                                            previousBrightness = brightness;
+            
+                                            previousContrast = contrast;
+            
+                        
+            
+                                                                // Set new values for color ASCII
+            
+                        
+            
+                                                                brightnessSlider.value = 3.0;
+            
+                        
+            
+                                                                contrastSlider.value = 0.3;
+            
+                        
+            
+                                                            } else {
+            
+                        
+            
+                                                                // Revert to previous values
+            
+                        
+            
+                                                                brightnessSlider.value = previousBrightness;
+            
+                        
+            
+                                                                contrastSlider.value = previousContrast;
+            
+                        
+            
+                                                            }
+            
+                        
+            
+                                        // Update the display and apply changes
+            
+                                        updateBrightness();
+            
+                                        updateContrast();
+            
+                        
+            
+                                        // Redraw current frame if video is loaded;
+            
+                                        if (video && !isPlaying) {
+            
+                                            processVideoFrame();
+            
+                                        }
+            
+                                    }
+            
+                        
+            
+                                    // Update font size
+            
+                                    function updateFontSize() {
+            
+                                        fontSize = parseFloat(fontSizeSlider.value);
+            
+                                        fontSizeValue.textContent = `${fontSize}px`;
+            
+                                        asciiArt.style.fontSize = `${fontSize}px`;
+            
+                                    }
+            
+                        
+            
+                                    // Update letter spacing
+            
+                                    function updateLetterSpacing() {
+            
+                                        letterSpacing = parseFloat(letterSpacingSlider.value);
+            
+                                        letterSpacingValue.textContent = `${letterSpacing}px`;
+            
+                                        asciiArt.style.letterSpacing = `${letterSpacing}px`;
+            
+                                    }
+            
+                        
+            
+                                    // Update line spacing
+            
+                                    function updateLineSpacing() {
+            
+                                        lineSpacing = parseFloat(lineSpacingSlider.value);
+            
+                                        lineSpacingValue.textContent = lineSpacing;
+            
+                                        asciiArt.style.lineHeight = lineSpacing;
+            
+                                    }
+            
+                        
+            
+                                    // Update ASCII color
+            
+                                    function updateAsciiColor() {
+            
+                                        asciiArt.style.color = asciiColor.value;
+            
+                                    }
+            
+                        
+            
+                                    // Update background color
+            
+                                    function updateBgColor() {
+            
+                                        asciiContainer.style.backgroundColor = bgColor.value;
+            
+                                    }
+            
+                        
+            
+                                    // Update font family
+            
+                                    function updateFont() {
+            
+                                        asciiArt.style.fontFamily = fontFamily.value;
+            
+                                    }
+            
+                        
+            
+                                    // Update font weight
+            
+                                    function updateFontWeight() {
+            
+                                        asciiArt.style.fontWeight = fontWeight.value;
+            
+                                    }
+            
+                        
+            
+                                    // Update character set
+            
+                                    function updateCharSet() {
+            
+                                        const selectedSet = charSet.value.split(':')[0].trim();
+            
+                        
+            
+                                        if (selectedSet === 'custom') {
+            
+                                            currentCharSet = customChars.value || ' .:-=+*#%@';
+            
+                                            customCharsGroup.style.display = 'flex';
+            
+                                        } else {
+            
+                                            currentCharSet = charSets[selectedSet];
+            
+                                            customCharsGroup.style.display = 'none';
+            
+                                        }
+            
+                        
+            
+                                        // Redraw current frame if video is loaded
+            
+                                        if (video && !isPlaying) {
+            
+                                            processVideoFrame();
+            
+                                        }
+            
+                                    }
+            
+                        
+            
+                                    // Update custom characters
+            
+                                    function updateCustomChars() {
+            
+                                        if (charSet.value.split(':')[0].trim() === 'custom') {
+            
+                                            currentCharSet = customChars.value || ' .:-=+*#%@';
+            
+                        
+            
+                                            // Redraw current frame if video is loaded
+            
+                                            if (video && !isPlaying) {
+            
+                                                processVideoFrame();
+            
+                                            }
+            
+                                        }
+            
+                                    }
+            
+                        
+            
+                                    // Format time in seconds to MM:SS
+            
+                                    function formatTime(seconds) {
+            
+                                        const mins = Math.floor(seconds / 60);
+            
+                                        const secs = Math.floor(seconds % 60);
+            
+                                        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            
+                                    }
+            
+                                });
+            

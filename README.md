@@ -5,6 +5,7 @@ This project is a web-based video player that converts MP4 videos into ASCII art
 ## Features
 
 *   **Real-time ASCII conversion:** Videos are converted to ASCII art on the fly as they play.
+*   **Dynamic Status Bar:** Provides real-time feedback on video loading, processing, and playback status, including current resolution.
 *   **Customizable output:** Users can adjust the following parameters to customize the ASCII output:
     *   Zoom
     *   Resolution
@@ -16,6 +17,7 @@ This project is a web-based video player that converts MP4 videos into ASCII art
     *   ASCII color
     *   Background color
     *   Character set
+    *   **COLOR ASCII:** Toggling this option automatically sets brightness to 3.0 and contrast to 0.3 for enhanced color representation, reverting to previous values when unchecked.
 *   **Playback controls:** The player includes standard playback controls like play, pause, restart, and a seek bar.
 *   **Fullscreen mode:** The ASCII art can be viewed in fullscreen mode for a more immersive experience.
 *   **Drag and drop file upload:** Users can drag and drop MP4 files to upload them.
@@ -47,7 +49,7 @@ The ASCII conversion process works as follows:
 
 ## Test Video
 
-A test video is included in the repository. You can play it by clicking the "PLAY HACKERS CLIP" button.
+A test video is included in the repository. You can play it by clicking the "PLAY HACKERS CLIP" button, which loads "Hackers (1995) Original Trailer.mp4".
 
 ## Deployment
 

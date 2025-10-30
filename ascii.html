@@ -19,9 +19,9 @@
         </header>
         
         <div class="status-bar">
-            <div class="status-item">STATUS: <span class="flashing">ASCII PROCESSING</span></div>
+            <div class="status-item" id="status-message">STATUS:</div>
             <div class="status-item"></div>
-            <div class="status-item">RESOLUTION: 240</div>
+            <div class="status-item" id="resolution-display">RESOLUTION:</div>
         </div>
         
         <div class="main-content">
@@ -46,7 +46,7 @@
                         <div class="time-display" id="time-display">0:00 / 0:00</div>
                     </div>
                     
-                    <video id="original-video" class="original-video" playsinline></video>
+                    <video id="original-video" class="original-video" controls></video>
                     
                     <div class="info-panel" id="info-panel">
                         Upload a video to begin
