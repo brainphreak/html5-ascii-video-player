@@ -48,3 +48,7 @@ The ASCII conversion process works as follows:
 ## Test Video
 
 A test video is included in the repository. You can play it by clicking the "PLAY HACKERS CLIP" button.
+
+## Author
+
+*   **Website:** [https://www.brainphreak.net](https://www.brainphreak.net)
