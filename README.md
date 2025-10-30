@@ -49,6 +49,42 @@ The ASCII conversion process works as follows:
 
 A test video is included in the repository. You can play it by clicking the "PLAY HACKERS CLIP" button.
 
+## Deployment
+
+Due to browser security policies (CORS), this application needs to be run from a web server. You cannot simply open the `ascii.html` file directly in your browser from your local file system.
+
+### Local Development
+
+For local testing, you can use Python's built-in HTTP server:
+
+```bash
+# Navigate to the project directory
+cd /path/to/html5-ascii-video-player
+
+# If you have Python 3
+python3 -m http.server
+
+# If you have Python 2
+python -m SimpleHTTPServer
+```
+
+Then, open your browser and go to `http://localhost:8000/ascii.html`.
+
+### Apache Server Deployment
+
+When deploying to an Apache web server, you may need to set the correct file permissions. After uploading the files to your server, run the following commands:
+
+```bash
+# Set ownership to the Apache user (e.g., www-data)
+chown -R www-data:www-data /path/to/your/project
+
+# Set directory permissions
+find /path/to/your/project -type d -exec chmod 755 {} \;
+
+# Set file permissions
+find /path/to/your/project -type f -exec chmod 644 {} \;
+```
+
 ## Author
 
 *   **Website:** [https://www.brainphreak.net](https://www.brainphreak.net)
