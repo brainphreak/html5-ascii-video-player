@@ -88,6 +88,7 @@
             const customCharsGroup = document.getElementById('custom-chars-group');
             const infoPanel = document.getElementById('info-panel');
             const loading = document.getElementById('loading');
+            const playTestVideoBtn = document.getElementById('play-test-video');
             
             // Character sets
             const charSets = {
@@ -150,6 +151,7 @@
             fontWeight.addEventListener('change', updateFontWeight);
             charSet.addEventListener('change', updateCharSet);
             customChars.addEventListener('input', updateCustomChars);
+            playTestVideoBtn.addEventListener('click', playTestVideo);
             
             // Keyboard shortcuts
             document.addEventListener('keydown', handleKeyPress);
@@ -192,6 +194,14 @@
                 
                 const videoUrl = URL.createObjectURL(file);
                 loadVideo(videoUrl, file.name, file.size);
+            }
+            
+            // Play test video
+            function playTestVideo(e) {
+                e.preventDefault();
+                loading.style.display = 'block';
+                asciiArt.textContent = 'Loading test video...';
+                loadVideo('./Hackers Movie Clip.mp4', 'Hackers Movie Clip.mp4', 0);
             }
             
             // Common video loading function
