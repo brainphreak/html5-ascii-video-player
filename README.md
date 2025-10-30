@@ -2,6 +2,10 @@
 
 This project is a web-based video player that converts MP4 videos into ASCII art in real-time. It's built with HTML, CSS, and JavaScript, and it allows users to upload their own videos and customize the ASCII output.
 
+## Live Demo
+
+Experience the ASCII Video Player live: [https://www.brainphreak.net/code/html5-ascii-video-player/ascii.html](https://www.brainphreak.net/code/html5-ascii-video-player/ascii.html)
+
 ## Features
 
 *   **Real-time ASCII conversion:** Videos are converted to ASCII art on the fly as they play.
