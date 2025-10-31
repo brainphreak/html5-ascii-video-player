@@ -130,6 +130,16 @@ Due to inherent limitations and aggressive media playback policies in mobile bro
 
 For the best experience, please use a desktop web browser (PC/Mac).
 
+## Browser Compatibility
+
+This application has been tested on macOS and works well with the following browsers:
+
+*   **Firefox:** Excellent performance.
+*   **Chrome:** Excellent performance.
+*   **Microsoft Edge:** Excellent performance.
+
+**Safari:** Users may experience choppy playback and performance issues. This is likely due to differences in Safari's JavaScript engine (JavaScriptCore) and its implementation of the HTML5 Canvas and video rendering pipeline, which may not be as optimized for this specific type of real-time video processing as other browsers.
+
 ## Author
 
 *   **Website:** [https://www.brainphreak.net](https://www.brainphreak.net)
