@@ -91,11 +91,16 @@
             const playTestVideoBtn = document.getElementById('play-test-video');
             const statusMessage = document.getElementById('status-message');
             const resolutionDisplay = document.getElementById('resolution-display');
+            const mobileMessageContainer = document.getElementById('mobile-message-container');
             
             // Display mobile compatibility message if on a mobile device
             if (isMobileDevice()) {
-                asciiArt.textContent = 'Mobile devices are not fully supported due to inherent browser limitations with video playback. Please use a desktop browser for the best experience.';
+                mobileMessageContainer.textContent = 'Mobile devices are not supported due to inherent browser limitations with video playback. Please use a desktop browser for the best experience.';
+                mobileMessageContainer.style.display = 'block';
+                asciiContainer.style.display = 'none';
             }
+            
+
             
             // Character sets
             const charSets = {

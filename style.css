@@ -297,6 +297,14 @@
             display: inline-block;
             filter: brightness(1);
         }
+
+        .mobile-message-container {
+            color: #00ff00;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 20px;
+            white-space: normal; /* Allow word wrapping */
+        }
         
         .fullscreen-controls {
             position: fixed;
