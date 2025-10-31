@@ -25,7 +25,11 @@ Experience the ASCII Video Player live: [https://www.brainphreak.net/code/html5-
 *   **Playback controls:** The player includes standard playback controls like play, pause, restart, and a seek bar.
 *   **Fullscreen mode:** The ASCII art can be viewed in fullscreen mode for a more immersive experience.
 *   **Drag and drop file upload:** Users can drag and drop MP4 files to upload them.
-*   **Keyboard shortcuts:** The player supports keyboard shortcuts for common actions.
+## Keyboard shortcuts:** The player supports keyboard shortcuts for common actions.
+
+## Recent Updates
+
+*   **Audio Synchronization Fix:** Implemented a robust fix for audio synchronization issues that occurred during video playback and seeking.
 
 ## How to Use
 
