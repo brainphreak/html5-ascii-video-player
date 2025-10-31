@@ -123,6 +123,10 @@
             let zoomLevel = parseInt(zoomSlider.value) / 100;
             let videoDuration = 0;
             let isFullscreen = false;
+            let shouldPlayAudio = false;
+            let processedFrameCount = 0;
+            let isSeeking = false;
+            let wasPlayingBeforeSeek = false;
             
             // Set up event listeners
             uploadBtn.addEventListener('click', () => {
@@ -205,6 +209,9 @@
             function playTestVideo(e) {
                 e.preventDefault();
                 console.log('playTestVideo called');
+                shouldPlayAudio = true;
+                processedFrameCount = 0;
+                originalVideo.muted = true;
                 loading.style.display = 'block';
                 asciiArt.textContent = 'Loading test video...';
                 statusMessage.textContent = 'STATUS: LOADING TEST VIDEO';
@@ -269,6 +276,18 @@
                     originalVideo.currentTime = 0;
                     originalVideo.load();
                     statusMessage.textContent = 'STATUS: ENDED';
+                });
+
+                // Handle seeking
+                originalVideo.addEventListener('seeked', function() {
+                    if (isSeeking) {
+                        isSeeking = false;
+                        if (wasPlayingBeforeSeek) {
+                            playVideo();
+                        } else {
+                            processVideoFrame(); // Render a single frame
+                        }
+                    }
                 });
             }
             
@@ -490,16 +509,17 @@
             // Seek video
             function seekVideo() {
                 if (!video || !originalVideo) return;
-                
+
+                if (!isSeeking) {
+                    wasPlayingBeforeSeek = isPlaying;
+                }
+
+                isSeeking = true;
+
                 const seekTime = parseFloat(seekSlider.value);
                 video.currentTime = seekTime;
                 originalVideo.currentTime = seekTime;
                 updateTimeDisplay(seekTime, videoDuration);
-                
-                // Process the frame at the new time
-                if (!isPlaying) {
-                    processVideoFrame();
-                }
             }
             
             // Update time display
@@ -510,6 +530,8 @@
             // Process each video frame
             function processVideoFrame() {
                 console.log('processVideoFrame called');
+                if (isSeeking) return; // Don't process frames while seeking
+
                 if (!isPlaying || !video || video.paused || video.ended) {
                     isPlaying = false;
                     return;
@@ -526,6 +548,23 @@
                         
                         // Draw current video frame to canvas
                         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        // Increment processed frame count
+                        processedFrameCount++;
+
+                        // Start audio after a few frames have been processed
+                        if (shouldPlayAudio && processedFrameCount >= 5) { // Start audio after 5 frames
+                            originalVideo.muted = false; // Ensure audio is not muted
+                            originalVideo.volume = 1; // Ensure volume is up
+                            originalVideo.play().catch(e => console.log('Original video play error:', e));
+                            shouldPlayAudio = false; // Reset flag
+                        }
+
+                        // Synchronize offscreen video to original video's time if there's a significant drift
+                        const timeDrift = originalVideo.currentTime - video.currentTime;
+                        if (Math.abs(timeDrift) > 0.1) { // Resync if drift is more than 100ms
+                            video.currentTime = originalVideo.currentTime;
+                        }
                         
                         // Convert frame to ASCII
                         const asciiFrame = convertFrameToAscii();
