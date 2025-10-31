@@ -312,13 +312,20 @@
         }
         
         .fullscreen-controls button {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        
+        .seek-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 20, 0, 0.7);
+            border: 1px solid #004400;
+            border-radius: 5px;
+            margin-bottom: 20px; /* Space between seek bar and control buttons */
         }
         
         .seek-controls {

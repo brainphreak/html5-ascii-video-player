@@ -33,6 +33,11 @@
                         </div>
                     </div>
                     
+                    <div class="seek-bar-container">
+                        <input type="range" id="seek-slider" class="seek-slider" min="0" max="100" value="0" disabled>
+                        <div class="time-display" id="time-display">0:00 / 0:00</div>
+                    </div>
+
                     <div class="fullscreen-controls" id="fullscreen-controls">
                         <button id="fullscreen-exit-btn" class="fullscreen-btn">EXIT FULLSCREEN (ESC)</button>
                     </div>
@@ -42,8 +47,6 @@
                         <button id="pause-btn" disabled>PAUSE</button>
                         <button id="restart-btn" disabled>RESTART</button>
                         <button id="fullscreen-btn" class="fullscreen-btn" disabled>FULLSCREEN (F)</button>
-                        <input type="range" id="seek-slider" class="seek-slider" min="0" max="100" value="0" disabled>
-                        <div class="time-display" id="time-display">0:00 / 0:00</div>
                     </div>
                     
                     <video id="original-video" class="original-video" controls></video>
@@ -185,6 +188,7 @@
         <footer>
             <p>ASCII VIDEO PROCESSOR</p>
             <p>FOR EDUCATIONAL AND CREATIVE PURPOSES</p>
+            <p>Developed by <a href="https://www.brainphreak.net" target="_blank">**brAinphreAk**</a></p>
         </footer>
     </div>
 
