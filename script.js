@@ -455,6 +455,9 @@
             // Handle keyboard shortcuts
             function handleKeyPress(e) {
                 if (!video) return;
+
+                // If a text input is focused, don't trigger shortcuts
+                if (document.activeElement === customChars) return;
                 
                 switch(e.key.toLowerCase()) {
                     case 'f':
