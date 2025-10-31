@@ -124,6 +124,12 @@ find /path/to/your/project -type d -exec chmod 755 {} \;
 find /path/to/your/project -type f -exec chmod 644 {} \;
 ```
 
+## Mobile Compatibility
+
+Due to inherent limitations and aggressive media playback policies in mobile browsers, this application currently does not fully support mobile devices. When attempting to play videos, mobile browsers often force a native fullscreen video player, preventing the real-time ASCII conversion from being displayed inline.
+
+For the best experience, please use a desktop web browser (PC/Mac).
+
 ## Author
 
 *   **Website:** [https://www.brainphreak.net](https://www.brainphreak.net)
