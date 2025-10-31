@@ -33,22 +33,27 @@ Here are some screenshots demonstrating the ASCII video player's capabilities:
 
 ### Color ASCII Conversion
 ![Color ASCII Conversion](screenshots/color-ascii.png)
+
 This image shows the video player converting an MP4 video into color ASCII art.
 
 ### Monocolor ASCII Conversion
 ![Monocolor ASCII Conversion](screenshots/green-ascii.png)
+
 This image demonstrates the classic green-on-black monocolor ASCII art output.
 
 ### Close-up of ASCII Output
 ![Close-up of ASCII Output](screenshots/close-up-ascii.png)
+
 A detailed view of the ASCII character rendering, showcasing the individual characters forming the image.
 
 ### Close-up with Custom Numeric Character Set
 ![Close-up with Custom Numeric Character Set](screenshots/close-up-ascii-custom-charset-numbers.png)
+
 This close-up highlights the use of a custom character set consisting solely of numbers for ASCII conversion.
 
 ### Settings Panel
 ![Settings Panel](screenshots/settings.png)
+
 A view of the customizable settings panel, allowing users to adjust various parameters like zoom, resolution, brightness, contrast, font settings, and character set.
 
 ## Recent Updates
