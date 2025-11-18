@@ -23,6 +23,8 @@ This project is a web-based video player that converts MP4 videos into ASCII art
 
 Experience the ASCII Video Player live: [https://www.brainphreak.net/code/html5-ascii-video-player/](https://www.brainphreak.net/code/html5-ascii-video-player/)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/F2F35TO7X)
+
 ## Features
 
 *   **Real-time ASCII conversion:** Videos are converted to ASCII art on the fly as they play.
